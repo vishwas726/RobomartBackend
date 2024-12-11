@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Category Store</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+  <div class="container mx-auto p-5">
+    <h1 class="text-2xl font-bold mb-5">Add a New Category</h1>
+    
+    <!-- Category Form -->
+    <form action="/add-category" method="POST" enctype="multipart/form-data" class="space-y-4">
+      <div>
+        <label class="block text-gray-700">Category Name</label>
+        <input type="text" name="name" class="w-full p-2 border border-gray-300 rounded" required>
+      </div>
+      <div>
+        <label class="block text-gray-700">Category Image</label>
+        <input type="file" name="image" accept="image/*" class="w-full p-2 border border-gray-300 rounded" required>
+      </div>
+      <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Add Category</button>
+    </form>
+
+    <!-- Display Categories -->
+    <h2 class="text-2xl font-bold mt-10">Category List</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-5">
+      <% categories.forEach(category => { %>
+        <div class="p-4 bg-white rounded shadow">
+          <img src="<%= category.image %>" alt="<%= category.name %>" class="w-full h-40 object-cover mb-4 rounded">
+          <h3 class="text-lg font-bold"><%= category.name %></h3>
+        </div>
+      <% }) %>
+    </div>
+  </div>
+</body>
+</html>

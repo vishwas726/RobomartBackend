@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Store</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    .entry {
+      display: flex;
+      align-items: center;
+      margin-bottom: 0.5rem;
+    }
+
+    .entry input {
+      flex: 1;
+    }
+
+    .remove-btn {
+      margin-left: 0.5rem;
+      background: red;
+      color: white;
+      border: none;
+      border-radius: 0.25rem;
+      padding: 0.5rem;
+      cursor: pointer;
+    }
+
+    .add-btn {
+      background: green;
+      color: white;
+      border: none;
+      border-radius: 0.25rem;
+      padding: 0.5rem;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body class="bg-gray-100">
+  <div class="container mx-auto p-5">
+    <h1 class="text-2xl font-bold mb-5">Add a New Product</h1>
+
+    <!-- Product Form -->
+    <form action="/add-product" method="POST" enctype="multipart/form-data" class="space-y-4">
+      <div>
+        <label class="block text-gray-700">Name</label>
+        <input type="text" name="name" class="w-full p-2 border border-gray-300 rounded" required>
+      </div>
+
+      <!-- Category Selection -->
+      <div>
+        <label class="block text-gray-700">Category</label>
+        <div id="category-container" class="space-y-2"></div>
+      </div>
+
+      <div>
+        <label class="block text-gray-700">Description</label>
+        <textarea name="description" class="w-full p-2 border border-gray-300 rounded" required></textarea>
+      </div>
+      <!-- <div>
+        <label class="block text-gray-700">Image</label>
+        <input type="file" name="image" accept="image/*" class="w-full p-2 border border-gray-300 rounded" required>
+      </div> -->
+      <div>
+        <label class="block text-gray-700">Additional Images</label>
+        <input type="file" name="imageUrls" accept="image/*" multiple class="w-full p-2 border border-gray-300 rounded">
+      </div>
+      <div>
+        <label class="block text-gray-700">Brand</label>
+        <input type="text" name="brand" class="w-full p-2 border border-gray-300 rounded" required>
+      </div>
+      <div>
+        <label class="block text-gray-700">SKU</label>
+        <input type="text" name="sku" class="w-full p-2 border border-gray-300 rounded" required>
+      </div>
+
+      <!-- Dynamic Input Fields -->
+      <div>
+        <label class="block text-gray-700">Tags</label>
+        <div id="tags-container" class="space-y-2">
+          <div class="entry">
+            <input type="text" name="tags[]" class="w-full p-2 border border-gray-300 rounded" placeholder="Enter tag">
+            <button type="button" class="remove-btn" onclick="removeEntry(this)">-</button>
+          </div>
+        </div>
+        <button type="button" class="add-btn" onclick="addEntry('tags-container')">+</button>
+      </div>
+
+      <div>
+        <label class="block text-gray-700">Specifications</label>
+        <div id="specifications-container" class="space-y-2">
+          <div class="entry">
+            <input type="text" name="specifications[]" class="w-full p-2 border border-gray-300 rounded"
+              placeholder="Enter specification">
+            <button type="button" class="remove-btn" onclick="removeEntry(this)">-</button>
+          </div>
+        </div>
+        <button type="button" class="add-btn" onclick="addEntry('specifications-container')">+</button>
+      </div>
+
+      <div>
+        <label class="block text-gray-700">Suggested Use</label>
+        <div id="suggested-use-container" class="space-y-2">
+          <div class="entry">
+            <input type="text" name="suggestedUse[]" class="w-full p-2 border border-gray-300 rounded"
+              placeholder="Enter suggested use">
+            <button type="button" class="remove-btn" onclick="removeEntry(this)">-</button>
+          </div>
+        </div>
+        <button type="button" class="add-btn" onclick="addEntry('suggested-use-container')">+</button>
+      </div>
+
+      <div>
+        <label class="block text-gray-700">Warnings</label>
+        <div id="warnings-container" class="space-y-2">
+          <div class="entry">
+            <input type="text" name="warnings[]" class="w-full p-2 border border-gray-300 rounded"
+              placeholder="Enter warning">
+            <button type="button" class="remove-btn" onclick="removeEntry(this)">-</button>
+          </div>
+        </div>
+        <button type="button" class="add-btn" onclick="addEntry('warnings-container')">+</button>
+      </div>
+
+      <div>
+        <label class="block text-gray-700">Package Includes</label>
+        <div id="package-includes-container" class="space-y-2">
+          <div class="entry">
+            <input type="text" name="packageIncludes[]" class="w-full p-2 border border-gray-300 rounded"
+              placeholder="Enter package item">
+            <button type="button" class="remove-btn" onclick="removeEntry(this)">-</button>
+          </div>
+        </div>
+        <button type="button" class="add-btn" onclick="addEntry('package-includes-container')">+</button>
+      </div>
+
+      <div>
+        <label class="block text-gray-700">Features</label>
+        <div id="features-container" class="space-y-2">
+          <div class="entry">
+            <input type="text" name="features[]" class="w-full p-2 border border-gray-300 rounded"
+              placeholder="Enter feature">
+            <button type="button" class="remove-btn" onclick="removeEntry(this)">-</button>
+          </div>
+        </div>
+        <button type="button" class="add-btn" onclick="addEntry('features-container')">+</button>
+      </div>
+
+      <div>
+        <label class="block text-gray-700">Highlights</label>
+        <div id="highlights-container" class="space-y-2">
+          <div class="entry">
+            <input type="text" name="highlights[]" class="w-full p-2 border border-gray-300 rounded"
+              placeholder="Enter highlight">
+            <button type="button" class="remove-btn" onclick="removeEntry(this)">-</button>
+          </div>
+        </div>
+        <button type="button" class="add-btn" onclick="addEntry('highlights-container')">+</button>
+      </div>
+
+      <div>
+        <label class="block text-gray-700">Rating</label>
+        <input type="number" step="0.1" name="rating" class="w-full p-2 border border-gray-300 rounded" min="0" max="5"
+          required>
+      </div>
+      <div>
+        <label class="block text-gray-700">Price</label>
+        <input type="number" name="price" class="w-full p-2 border border-gray-300 rounded" required>
+      </div>
+      <div>
+        <label class="block text-gray-700">Original Price</label>
+        <input type="number" name="originalPrice" class="w-full p-2 border border-gray-300 rounded" required>
+      </div>
+      <div>
+        <label class="block text-gray-700">Discount (%)</label>
+        <input type="number" name="discount" class="w-full p-2 border border-gray-300 rounded" min="0" max="100">
+      </div>
+      <div>
+        <label class="block text-gray-700">Badge</label>
+        <input type="text" name="badge" class="w-full p-2 border border-gray-300 rounded">
+      </div>
+      <div>
+        <label class="block text-gray-700">Badge Color</label>
+        <input type="color" name="badgeColor" class="w-full p-2 border border-gray-300 rounded" value="#000000">
+      </div>
+      <div>
+        <label class="block text-gray-700">Manufacturer</label>
+        <input type="date" name="mfg" class="w-full p-2 border border-gray-300 rounded" required>
+      </div>
+      <div>
+        <label class="block text-gray-700">Type</label>
+        <input type="text" name="type" class="w-full p-2 border border-gray-300 rounded" required>
+      </div>
+      <div>
+        <label class="block text-gray-700">Stock</label>
+        <input type="number" name="stock" class="w-full p-2 border border-gray-300 rounded" required>
+      </div>
+      <div>
+        <label class="block text-gray-700">Vendor</label>
+        <input type="text" name="vendor" class="w-full p-2 border border-gray-300 rounded" required>
+      </div>
+      <button type="submit" class="bg-blue-500 text-white rounded py-2 px-4">Add Product</button>
+    </form>
+  </div>
+
+  <script>
+    async function loadCategories() {
+      try {
+        const response = await fetch('/api/categories'); // Fetch from the new API endpoint
+        const categories = await response.json(); // Expecting the response to be JSON
+
+        const categoryContainer = document.getElementById('category-container');
+        categories.forEach(category => {
+          const radio = document.createElement('div');
+          radio.innerHTML = `
+                <label>
+                    <input type="radio" name="category" value="${category._id}" class="mr-2">
+                    ${category.name}
+                </label>
+            `;
+          categoryContainer.appendChild(radio);
+        });
+      } catch (error) {
+        console.error('Error loading categories:', error);
+      }
+    }
+    function addEntry(containerId) {
+      const container = document.getElementById(containerId);
+      const newEntry = document.createElement('div');
+      newEntry.className = 'entry';
+      newEntry.innerHTML = `
+                <input type="text" name="${containerId.replace('-container', '')}[]" class="w-full p-2 border border-gray-300 rounded" placeholder="Enter item">
+                <button type="button" class="remove-btn" onclick="removeEntry(this)">-</button>
+            `;
+      container.appendChild(newEntry);
+    }
+
+    function removeEntry(button) {
+      const entry = button.parentElement;
+      entry.remove();
+    }
+
+    // Load categories when the page is loaded
+    window.onload = loadCategories;
+  </script>
+</body>
+
+</html>
